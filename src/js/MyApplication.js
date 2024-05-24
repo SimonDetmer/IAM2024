@@ -36,7 +36,8 @@ class MyApplication extends mwf.Application {
         this.registerEntity("MediaItem", entities.MediaItem, true);
         this.registerCRUD("MediaItem", this.CRUDOPS.LOCAL, GenericCRUDImplLocal.newInstance("MediaItem"));
         this.registerCRUD("MediaItem", this.CRUDOPS.REMOTE, GenericCRUDImplRemote.newInstance("MediaItem"));
-// activate the local crud operations
+
+        // activate the local crud operations
         this.initialiseCRUD(this.CRUDOPS.LOCAL,EntityManager);
 
         // THIS MUST NOT BE FORGOTTEN: initialise the entity manager!
@@ -47,5 +48,3 @@ class MyApplication extends mwf.Application {
 
 const application = new MyApplication();
 export {application as default}
-
-
