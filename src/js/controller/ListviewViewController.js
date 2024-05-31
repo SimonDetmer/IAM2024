@@ -1,7 +1,7 @@
 /**
  * @author Jörn Kreutel
  */
-import {mwf} from "vfh-iam-mwf-base";
+import {GenericCRUDImplLocal, mwf} from "vfh-iam-mwf-base";
 import {mwfUtils} from "vfh-iam-mwf-base";
 import * as entities from "../model/MyEntities.js";
 
@@ -12,9 +12,8 @@ export default class ListviewViewController extends mwf.ViewController {
     root;
 
     constructor() {
-        super();
-
-        console.log("ListviewViewController constructor called");;
+        super()
+        console.log("ListviewViewController constructor called");
     }
 
     /*
@@ -24,26 +23,29 @@ export default class ListviewViewController extends mwf.ViewController {
         console.log("ListviewViewController oncreate called");
 
         // Initialisiere die Liste mit den vorgegebenen Items
-        this.items = [
-            new entities.MediaItem("m1", "https://i.pinimg.com/originals/e9/e3/29/e9e329c92bccbb2f298e63ec7874ada7.jpg"),
-            new entities.MediaItem("m2", "https://image.essen-und-trinken.de/11920128/t/XZ/v8/w960/r1/-/rotkaeppchen-kuchen-40e5b57ac898a2c63e49659b7b166773-fjt2014031001-jpg--7723-.jpg"),
-            new entities.MediaItem("m3", "https://www.simply-yummy.de/files/styles/tec_frontend_large/public/images/recipes/froschkuchen.jpeg")
-        ];
+        //this.items = [
+           // new entities.MediaItem("m1", "https://i.pinimg.com/originals/e9/e3/29/e9e329c92bccbb2f298e63ec7874ada7.jpg"),
+         //   new entities.MediaItem("m2", "https://image.essen-und-trinken.de/11920128/t/XZ/v8/w960/r1/-/rotkaeppchen-kuchen-40e5b57ac898a2c63e49659b7b166773-fjt2014031001-jpg--7723-.jpg"),
+          //  new entities.MediaItem("m3", "https://www.simply-yummy.de/files/styles/tec_frontend_large/public/images/recipes/froschkuchen.jpeg")
+       // ];
 
         // Liste sofort initialisieren mit den vorgegebenen Items
-        this.initialiseListview(this.items);
+       // this.initialiseListview(this.items);
 
         // Event Listener für neuen Media-Item hinzufügen
-        this.addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
+        this.addNewMediaItemElement = this.root.querySelector("#addNewMediaItem"); // Hier wird einfach im Html der Plusbutton in eine Variable gesteckt
         this.addNewMediaItemElement.onclick = (() => {
-            const newItem = new entities.MediaItem("m new", "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg");
-            this.items.push(newItem); // Neues Item zur Liste hinzufügen
-            this.addToListview(newItem); // Neues Item zur Ansicht hinzufügen
-        });
+           // const newItem = new entities.MediaItem("m new", "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg");
+            //this.items.push(newItem); // Neues Item zur Liste hinzufügen
+            //this.addToListview(newItem); // Neues Item zur Ansicht hinzufügen
 
+            this.createNewItem() // Neue Funktion zum Erstellen eines neues Items, welches wirklich gespeichert
+
+        });
+   
         // CRUD-Operationen lesen und die Liste initialisieren
         try {
-            const itemsFromCrud = await this.crudops.readAll();
+            const itemsFromCrud = await entities.MediaItem.readAll();
             this.items = itemsFromCrud; // Ersetze die initialen Items durch die aus der CRUD-Operation
             this.initialiseListview(this.items); // Liste mit den Items aus der CRUD-Operation initialisieren
         } catch (error) {
@@ -53,7 +55,18 @@ export default class ListviewViewController extends mwf.ViewController {
         // Superklasse aufrufen, wenn die Erstellung abgeschlossen ist
         super.oncreate();
         console.log("ListviewViewController oncreate completed");
+
+
     }
+
+    createNewItem() {
+        var newItem = new entities.MediaItem('new', 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg');
+
+        newItem.create().then(() => {
+            this.addToListview(newItem);
+        });
+    }
+
 
     /*
      * for views that initiate transitions to other views
@@ -102,13 +115,13 @@ export default class ListviewViewController extends mwf.ViewController {
     }
 
     deleteItem(item) {
-        this.crudops.delete(item._id).then(() => {
+        item.delete().then(() => {
             this.removeFromListview(item._id);
         });
     }
     editItem(item) {
-        item.title = (item.title + item.title);
-        this.crudops.update(item._id,item).then(() => {
+        item.title = (item.title + item.title); // Der Titel des ausgewählten Objects erhält einen neuen Titel (zweimal der bestehende Titel)
+        item.update().then(() => { // Hier wird bereits ein Update eines Objects aus der Datenbank ausgeführt.
             this.updateInListview(item._id,item);
         });
     }
