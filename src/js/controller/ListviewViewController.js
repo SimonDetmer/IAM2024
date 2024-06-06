@@ -81,8 +81,11 @@ export default class ListviewViewController extends mwf.ViewController {
      * for views that initiate transitions to other views
      * NOTE: return false if the view shall not be returned to, e.g. because we immediately want to display its previous view. Otherwise, do not return anything.
      */
-    async onReturnFromNextView(nextviewid, returnValue, returnStatus) {
-        // TODO: check from which view, and possibly with which status, we are returning, and handle returnValue accordingly
+    async onReturnFromNextView(nextviewid,returnValue,returnStatus)
+    {
+        if (nextviewid == "mediaReadview" && returnValue && returnValue.deletedItem) {
+            this.removeFromListview(returnValue.deletedItem._id);
+        }
     }
 
     /*
@@ -101,7 +104,7 @@ export default class ListviewViewController extends mwf.ViewController {
      * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
      */
     onListItemSelected(itemobj, listviewid) {
-        alert("Element " + itemobj.title + itemobj._id + " wurde ausgewählt!");
+        this.nextView("mediaReadview",{item: itemobj});
     }
 
     /*
@@ -124,7 +127,7 @@ export default class ListviewViewController extends mwf.ViewController {
     }
 
     deleteItem(item) {
-        item.delete().then(() => {
+        item.delete(() => {
             this.removeFromListview(item._id);
         });
     }
