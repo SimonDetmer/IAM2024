@@ -60,10 +60,19 @@ export default class ListviewViewController extends mwf.ViewController {
     }
 
     createNewItem() {
-        var newItem = new entities.MediaItem('new', 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg');
+        var newItem = new entities.MediaItem("", 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg');
 
-        newItem.create().then(() => {
-            this.addToListview(newItem);
+        this.showDialog("mediaItemDialog",{
+            item: newItem,
+            actionBindings: {
+                submitForm: ((event) => {
+                    event.original.preventDefault();
+                    newItem.create().then(() => {
+                        this.addToListview(newItem);
+                    });
+                    this.hideDialog();
+                })
+            }
         });
     }
 
@@ -120,9 +129,20 @@ export default class ListviewViewController extends mwf.ViewController {
         });
     }
     editItem(item) {
-        item.title = (item.title + item.title); // Der Titel des ausgewählten Objects erhält einen neuen Titel (zweimal der bestehende Titel)
-        item.update().then(() => { // Hier wird bereits ein Update eines Objects aus der Datenbank ausgeführt.
-            this.updateInListview(item._id,item);
+        this.showDialog("mediaItemDialog", {
+            item: item,
+            actionBindings: {
+                submitForm: ((event) => {
+                    event.original.preventDefault();
+                    item.update().then(() => {
+                        this.updateInListview(item._id, item);
+                    });
+                }),
+                deleteItem: ((event) => {
+                    this.deleteItem(item);
+                    this.hideDialog();
+                })
+            }
         });
     }
 
