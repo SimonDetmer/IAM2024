@@ -40,8 +40,20 @@ export default class ListviewViewController extends mwf.ViewController {
             //this.addToListview(newItem); // Neues Item zur Ansicht hinzufügen
 
             this.createNewItem() // Neue Funktion zum Erstellen eines neues Items, welches wirklich gespeichert
+            // siehe Aufzeichnung vom 28.5.2024 - 1:20:13 für weitere Einstellungen
 
         });
+
+        this.root.querySelector("footer .mwf-img-refresh").onclick = () => {
+            // alert("switchCRUD operations. cuurent operations / currentCRUDScope are: " + this.application.currentCRUDScope);
+            if (this.application.currentCRUDScope === "local") {
+                this.application.switchCRUD("remote");
+            }
+            else {
+                this.application.switchCRUD("local");
+            }
+            entities.MediaItem.readAll().then(items => this.initialiseListview(items));
+        }
    
         // CRUD-Operationen lesen und die Liste initialisieren
         try {
