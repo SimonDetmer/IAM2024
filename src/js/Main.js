@@ -15,7 +15,8 @@ import * as entities from "./model/MyEntities.js";
 import MyInitialViewController from "./controller/MyInitialViewController.js";
 // TODO-REPEATED: import any further view controllers here
 import ListviewViewController from "./controller/ListviewViewController.js";
-import ReadviewViewController from "./controller/ReadviewViewController.js"
+import ReadviewViewController from "./controller/ReadviewViewController.js";
+import EditviewViewcontroller from "./controller/EditviewViewcontroller";
 
 // Debug logs
 console.log("Registering view controllers...");
@@ -29,7 +30,8 @@ mwf.app.components = {
     MyInitialViewController, /*!!!*/
     // TODO-REPEATED: export any further view controllers here
     ListviewViewController,
-    ReadviewViewController
+    ReadviewViewController,
+    EditviewViewcontroller
 }
 
 // then start the application

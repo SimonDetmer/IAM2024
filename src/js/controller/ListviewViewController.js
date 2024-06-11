@@ -39,8 +39,9 @@ export default class ListviewViewController extends mwf.ViewController {
             //this.items.push(newItem); // Neues Item zur Liste hinzufügen
             //this.addToListview(newItem); // Neues Item zur Ansicht hinzufügen
 
-            this.createNewItem() // Neue Funktion zum Erstellen eines neues Items, welches wirklich gespeichert
+            // this.createNewItem() // War bis heute noch aktiv (11.6.2024)
             // siehe Aufzeichnung vom 28.5.2024 - 1:20:13 für weitere Einstellungen
+            this.nextView("myapp-mediaEditview");
 
         });
 
