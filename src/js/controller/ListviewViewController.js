@@ -99,6 +99,12 @@ export default class ListviewViewController extends mwf.ViewController {
         if (nextviewid == "mediaReadview" && returnValue && returnValue.deletedItem) {
             this.removeFromListview(returnValue.deletedItem._id);
         }
+        else if (returnStatus === "itemCreated" && returnValue.item) {
+            this.addToListview(returnValue.item);
+        }
+        else if (returnStatus === "itemUpdated" && returnValue.item) {
+            this.updateInListview(returnValue.item._id,returnValue.item);
+        }
     }
 
     /*
