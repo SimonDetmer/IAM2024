@@ -89,6 +89,8 @@
             <form id="myapp-mediaEditviewForm">
                 <input name="title" type="text" placeholder="Title" value="{{item.title}}"/>
                 <input name="src" type="url" placeholder="URL" value="{{item.src}}"/>
+                <input type="file" accept="image/*,video/*" name="srcimg"/>
+                <img src="{{item.src}}"/>
             </form>
         </main>
         <footer>
