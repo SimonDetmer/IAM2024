@@ -21,6 +21,15 @@ export default class ListviewViewController extends mwf.ViewController {
      */
     async oncreate() {
         console.log("ListviewViewController oncreate called");
+        if (this.application.currentCRUDScope === "local") {
+
+
+            this.root.querySelector("footer #status").innerHTML = 'local'
+
+        }
+        else {
+            this.root.querySelector("footer #status").innerHTML = 'remote'
+        }
 
         // Initialisiere die Liste mit den vorgegebenen Items
         //this.items = [
@@ -43,15 +52,21 @@ export default class ListviewViewController extends mwf.ViewController {
             // siehe Aufzeichnung vom 28.5.2024 - 1:20:13 für weitere Einstellungen
             this.nextView("myapp-mediaEditview");
 
+
+
         });
 
         this.root.querySelector("footer .mwf-img-refresh").onclick = () => {
             // alert("switchCRUD operations. cuurent operations / currentCRUDScope are: " + this.application.currentCRUDScope);
             if (this.application.currentCRUDScope === "local") {
                 this.application.switchCRUD("remote");
+
+                this.root.querySelector("footer #status").innerHTML = 'remote'
+
             }
             else {
                 this.application.switchCRUD("local");
+                this.root.querySelector("footer #status").innerHTML = 'local'
             }
             entities.MediaItem.readAll().then(items => this.initialiseListview(items));
         }
@@ -96,6 +111,7 @@ export default class ListviewViewController extends mwf.ViewController {
      */
     async onReturnFromNextView(nextviewid,returnValue,returnStatus)
     {
+
         if (nextviewid == "mediaReadview" && returnValue && returnValue.deletedItem) {
             this.removeFromListview(returnValue.deletedItem._id);
         }
@@ -104,6 +120,9 @@ export default class ListviewViewController extends mwf.ViewController {
         }
         else if (returnStatus === "itemUpdated" && returnValue.item) {
             this.updateInListview(returnValue.item._id,returnValue.item);
+        }
+        else if (returnStatus === "itemDeleted" && returnValue && returnValue.deletedItem) {
+            this.removeFromListview(returnValue.deletedItem._id);
         }
     }
 
