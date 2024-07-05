@@ -64,18 +64,6 @@
     </main>
 </div>
 
-<!-- Löschdialog -->
-<div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDeleteDialog">
-    <main>
-        <h2>Wirklich Löschen?</h2>
-        <p>Wollen Sie wirklich {{item.title}} löschen?</p>
-        <div class="mwf-buttonbar">
-            <button class="mwf-left-align mwf-button" type="button" on-click="abort" disabled="{{#unless item.created}}disabled{{/unless}}">Abbrechen</button>
-            <button class="mwf-button-prio mwf-right-align mwf-button" on-click="deleteItem" type="button">Löschen</button>
-        </div>
-    </main>
-</div>
-
 <!-- Leseansicht -->
 <div class="mwf-view" id="mediaReadview" data-mwf-viewcontroller="ReadviewViewController">
     <div class="mwf-template mwf-databind" data-mwf-templatename="mediaReadviewTemplate">
@@ -95,7 +83,6 @@
   </div>
 
 <!-- Editieransicht -->
-<!-- data: {item: <media item to be edited or created>} -->
 <div class="mwf-view" id="myapp-mediaEditview" data-mwf-viewcontroller="EditviewViewController">
     <div class="mwf-template mwf-databind" data-mwf-templatename="myapp-mediaEditviewTemplate">
         <header>
@@ -117,19 +104,6 @@
             <button class="mwf-back mwf-imgbutton mwf-img-backward"></button>
         </footer>
     </div>
-</div>
-
-<div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDialog">
-    <main>
-        <h2>{{#if item.created}}Medium editieren{{else}}Neues Medium{{/if}}</h2>
-        <form id="itemEditForm" on-submit="submitForm">
-            <input name="title" autocomplete="off" class="mwf-autofocus" type="text" placeholder="Titel" required="required" value="{{item.title}}"/>
-            <div class="mwf-buttonbar">
-                <button class="mwf-left-align mwf-button" disabled="{{#unless item.created}}disabled{{/unless}}" type="button" on-click="deleteItem">Löschen</button>
-                <input class="mwf-button-prio mwf-right-align mwf-button" type="submit" value="{{#if item.created}}Ändern{{else}}Hinzufügen{{/if}}"/>
-            </div>
-        </form>
-    </main>
 </div>
 
 </body>

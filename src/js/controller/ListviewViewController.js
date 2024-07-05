@@ -20,49 +20,23 @@ export default class ListviewViewController extends mwf.ViewController {
      * for any view: initialise the view
      */
     async oncreate() {
-        console.log("ListviewViewController oncreate called");
         if (this.application.currentCRUDScope === "local") {
-
-
             this.root.querySelector("footer #status").innerHTML = 'local'
-
         }
         else {
             this.root.querySelector("footer #status").innerHTML = 'remote'
         }
 
-        // Initialisiere die Liste mit den vorgegebenen Items
-        //this.items = [
-           // new entities.MediaItem("m1", "https://i.pinimg.com/originals/e9/e3/29/e9e329c92bccbb2f298e63ec7874ada7.jpg"),
-         //   new entities.MediaItem("m2", "https://image.essen-und-trinken.de/11920128/t/XZ/v8/w960/r1/-/rotkaeppchen-kuchen-40e5b57ac898a2c63e49659b7b166773-fjt2014031001-jpg--7723-.jpg"),
-          //  new entities.MediaItem("m3", "https://www.simply-yummy.de/files/styles/tec_frontend_large/public/images/recipes/froschkuchen.jpeg")
-       // ];
-
-        // Liste sofort initialisieren mit den vorgegebenen Items
-       // this.initialiseListview(this.items);
-
         // Event Listener für neuen Media-Item hinzufügen
-        this.addNewMediaItemElement = this.root.querySelector("#addNewMediaItem"); // Hier wird einfach im Html der Plusbutton in eine Variable gesteckt
+        this.addNewMediaItemElement = this.root.querySelector("#addNewMediaItem");
         this.addNewMediaItemElement.onclick = (() => {
-           // const newItem = new entities.MediaItem("m new", "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg");
-            //this.items.push(newItem); // Neues Item zur Liste hinzufügen
-            //this.addToListview(newItem); // Neues Item zur Ansicht hinzufügen
-
-            // this.createNewItem() // War bis heute noch aktiv (11.6.2024)
-            // siehe Aufzeichnung vom 28.5.2024 - 1:20:13 für weitere Einstellungen
             this.nextView("myapp-mediaEditview");
-
-
-
         });
 
         this.root.querySelector("footer .mwf-img-refresh").onclick = () => {
-            // alert("switchCRUD operations. cuurent operations / currentCRUDScope are: " + this.application.currentCRUDScope);
             if (this.application.currentCRUDScope === "local") {
                 this.application.switchCRUD("remote");
-
                 this.root.querySelector("footer #status").innerHTML = 'remote'
-
             }
             else {
                 this.application.switchCRUD("local");
@@ -86,24 +60,6 @@ export default class ListviewViewController extends mwf.ViewController {
 
 
     }
-
-    createNewItem() {
-        var newItem = new entities.MediaItem("", 'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/A8971B73-0803-4B25-9979-4A1DAA8BE620/Derivates/567fdd64-76f6-470e-ba00-ac69d3e3feab.jpg');
-
-        this.showDialog("mediaItemDialog",{
-            item: newItem,
-            actionBindings: {
-                submitForm: ((event) => {
-                    event.original.preventDefault();
-                    newItem.create().then(() => {
-                        this.addToListview(newItem);
-                    });
-                    this.hideDialog();
-                })
-            }
-        });
-    }
-
 
     /*
      * for views that initiate transitions to other views
@@ -169,6 +125,7 @@ export default class ListviewViewController extends mwf.ViewController {
             this.removeFromListview(item._id);
         });
     }
+
     editItem(item) {
         this.showDialog("mediaItemDialog", {
             item: item,
