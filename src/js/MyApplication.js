@@ -30,7 +30,6 @@ class MyApplication extends mwf.Application {
         //// TODO-REPEATED: if entity manager is used, register entities and crud operations for the entity types
         this.registerEntity("MediaItem", entities.MediaItem, true);
         this.registerCRUD("MediaItem", this.CRUDOPS.LOCAL, GenericCRUDImplLocal.newInstance("MediaItem"));
-        //this.registerCRUD("MediaItem", this.CRUDOPS.REMOTE, GenericCRUDImplRemote.newInstance("MediaItem"));
 
         // TODO: do any further application specific initialisations here
         this.registerEntity("MediaItem", entities.MediaItem, true);

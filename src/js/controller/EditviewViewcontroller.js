@@ -17,9 +17,7 @@ export default class EditviewViewController extends mwf.ViewController {
      * for any view: initialise the view
      */
     async oncreate() {
-
         this.mediaItem = this.args?.item || new entities.MediaItem();
-
 
         // instantiate the template for the view
         this.viewProxy = this.bindElement("myapp-mediaEditviewTemplate", {item: this.mediaItem}, this.root).viewProxy;
@@ -56,11 +54,10 @@ export default class EditviewViewController extends mwf.ViewController {
                 requestObj.open("POST",uploadUrl);
                 const dataToBeUploaded = new FormData();
                 dataToBeUploaded.append("imgdata",this.editviewForm.srcimg.files[0]);
-                requestObj.send(dataToBeUploaded); // send-Methode genauer anschauen zur Rücksprache, allgemein xmlhttp-request- wie reagiert server, wie kann man damit umgehen
+                requestObj.send(dataToBeUploaded);
                 // 2. obtain the URL for the referencing the uploaded image on the server
                 requestObj.onload = () => {
                     if (requestObj.status === 200) {
-                        alert("responseText: " + requestObj.responseText);
                         const responseData = JSON.parse(requestObj.responseText);
                         console.log("responseData: ", responseData);
                         const uploadedImgRelativeUrl = responseData.data.imgdata;
@@ -73,13 +70,10 @@ export default class EditviewViewController extends mwf.ViewController {
                         alert("Error status on upload!: " + requestObj.status);
                     }
                 }
-
-
             }
             else {
                 this.createOrUpdateMediaItem();
             }
-
 
             // return false to prevent form data submission by the browser
             return false;
@@ -89,16 +83,8 @@ export default class EditviewViewController extends mwf.ViewController {
         super.oncreate();
     }
 
-
     createOrUpdateMediaItem() {
         // handle the submit
-        // const selectedSrc = this.editviewForm.src.value;
-        // const selectedTitle = this.editviewForm.title.value;
-
-        // const newMediaItem = new entities.MediaItem(selectedTitle,selectedSrc);
-        // console.log("newMediaItem: " + newMediaItem, newMediaItem.added, newMediaItem.addedDateString);
-        alert("this.mediaItem: " + this.mediaItem.src + "; " + this.mediaItem.title);
-
         if (this.mediaItem.created) {
             this.mediaItem.update().then(() => {
                 this.previousView({item: this.mediaItem}, "itemUpdated");
@@ -111,64 +97,9 @@ export default class EditviewViewController extends mwf.ViewController {
         }
     }
 
-
-    // async onresume() {
-    //    this.editviewForm.src.value = this.mediaItem.src;
-    //    this.editviewForm.title.value = this.mediaItem.title;
-
-    //    this.root.querySelector("header h1").textContent = this.mediaItem.title;
-
-    //    super.onresume();
-    //}
-
-
     constructor() {
         super();
 
         console.log("EditviewViewController()");
     }
-
-    /*
-     * for views that initiate transitions to other views
-     * NOTE: return false if the view shall not be returned to, e.g. because we immediately want to display its previous view. Otherwise, do not return anything.
-     */
-    async onReturnFromNextView(nextviewid, returnValue, returnStatus) {
-        // TODO: check from which view, and possibly with which status, we are returning, and handle returnValue accordingly
-    }
-
-    /*
-     * for views with listviews: bind a list item to an item view
-     * TODO: delete if no listview is used or if databinding uses ractive templates
-     */
-    bindListItemView(listviewid, itemview, itemobj) {
-        // TODO: implement how attributes of itemobj shall be displayed in itemview
-    }
-
-    /*
-     * for views with listviews: react to the selection of a listitem
-     * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
-     */
-    onListItemSelected(itemobj, listviewid) {
-        // TODO: implement how selection of itemobj shall be handled
-    }
-
-    /*
-     * for views with listviews: react to the selection of a listitem menu option
-     * TODO: delete if no listview is used or if item selection is specified by targetview/targetaction
-     */
-    onListItemMenuItemSelected(menuitemview, itemobj, listview) {
-        // TODO: implement how selection of the option menuitemview for itemobj shall be handled
-    }
-
-    /*
-     * for views with dialogs
-     * TODO: delete if no dialogs are used or if generic controller for dialogs is employed
-     */
-    bindDialog(dialogid, dialogview, dialogdataobj) {
-        // call the supertype function
-        super.bindDialog(dialogid, dialogview, dialogdataobj);
-
-        // TODO: implement action bindings for dialog, accessing dialog.root
-    }
-
 }
