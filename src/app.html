@@ -51,6 +51,7 @@
     </footer>
 </div>
 
+<!-- Dialog zur Abfrage ob MediaItem bearbeiten oder löschen -->
 <div data-mwf-templatename="mediaItemMenu" class="mwf-listitem-menu mwf-template mwf-databind mwf-dialog mwf-popup">
     <header>
         <h2 class="mwf-dyncontent">{{title}}{{_id}}</h2>
@@ -63,36 +64,50 @@
     </main>
 </div>
 
+<!-- Löschdialog -->
+<div class="mwf-dialog mwf-popup mwf-template mwf-databind mwf-view-component" data-mwf-viewcontroller="GenericDialogTemplateViewController" data-mwf-templatename="mediaItemDeleteDialog">
+    <main>
+        <h2>Wirklich Löschen?</h2>
+        <p>Wollen Sie wirklich {{item.title}} löschen?</p>
+        <div class="mwf-buttonbar">
+            <button class="mwf-left-align mwf-button" type="button" on-click="abort" disabled="{{#unless item.created}}disabled{{/unless}}">Abbrechen</button>
+            <button class="mwf-button-prio mwf-right-align mwf-button" on-click="deleteItem" type="button">Löschen</button>
+        </div>
+    </main>
+</div>
+
+<!-- Leseansicht -->
 <div class="mwf-view" id="mediaReadview" data-mwf-viewcontroller="ReadviewViewController">
     <div class="mwf-template mwf-databind" data-mwf-templatename="mediaReadviewTemplate">
         <header>
             <button class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></button>
-            <h1 class="mwf-left-align">{{item.title}}</h1>
-            <button class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></button>
-        </header>
-        <main class="mwf-scrollview">
-            <img src="{{item.src}}"/>
-            <input type="text" placeholder="Description" value="{{item.description}}">
-        </main>
-        <footer>
-            <button class="mwf-back mwf-imgbutton mwf-img-backward"></button>
-        </footer>
-    </div>
-</div>
+              <h1 class="mwf-left-align">{{item.title}}</h1>
+              <button class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></button>
+          </header>
+          <main class="mwf-scrollview">
+              <img src="{{item.src}}"/>
+              <input type="text" placeholder="Description" value="{{item.description}}">
+          </main>
+          <footer>
+              <button class="mwf-back mwf-imgbutton mwf-img-backward"></button>
+          </footer>
+      </div>
+  </div>
+
 <!-- Editieransicht -->
 <!-- data: {item: <media item to be edited or created>} -->
 <div class="mwf-view" id="myapp-mediaEditview" data-mwf-viewcontroller="EditviewViewController">
     <div class="mwf-template mwf-databind" data-mwf-templatename="myapp-mediaEditviewTemplate">
         <header>
             <button class="mwf-imgbutton mwf-img-sandwich mwf-left-align"></button>
-            <h1 class="mwf-left-align mwf-dyncontent">{{item.title}}</h1>
+            <h1 class="mwf-left-align mwf-right-fill">{{#if item.created}}{{item.title}}{{else}}Neues Medium{{/if}}</h1>
             <input class="mwf-imgbutton mwf-img-disk mwf-right-align" type="submit" form="myapp-mediaEditviewForm"/>
             <button id="deleteButton" class="mwf-imgbutton mwf-img-delete mwf-right-align" on-click="deleteItem"></button>
         </header>
         <main>
             <form id="myapp-mediaEditviewForm">
-                <input name="title" type="text" placeholder="Title" value="{{item.title}}"/>
-                <input name="src" type="url" placeholder="URL" value="{{item.src}}"/>
+                <input name="title" type="text" placeholder="Title" value="{{item.title}}" required/>
+                <input name="src" type="url" placeholder="URL" value="{{item.src}}" required/>
                 <input type="file" accept="image/*,video/*" name="srcimg"/>
                 <input type="text" placeholder="Description" value="{{item.description}}">
                 <img src="{{item.src}}"/>
