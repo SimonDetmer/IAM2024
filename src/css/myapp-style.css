@@ -2,3 +2,9 @@
     width: 100%;
     max-width: 100%;
 }
+
+#status {
+    margin: 0px 0px 0px 10px;
+    height: var(--var-mwf-footer-height);
+    line-height: var(--var-mwf-footer-height);
+}

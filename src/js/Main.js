@@ -38,5 +38,3 @@ mwf.app.components = {
 window.onload = () => {
     mwf.onloadApplication();
 }
-
-

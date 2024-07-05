@@ -17,7 +17,9 @@ export default class EditviewViewController extends mwf.ViewController {
      * for any view: initialise the view
      */
     async oncreate() {
+
         this.mediaItem = this.args?.item || new entities.MediaItem();
+
 
         // instantiate the template for the view
         this.viewProxy = this.bindElement("myapp-mediaEditviewTemplate", {item: this.mediaItem}, this.root).viewProxy;
@@ -87,6 +89,7 @@ export default class EditviewViewController extends mwf.ViewController {
         super.oncreate();
     }
 
+
     createOrUpdateMediaItem() {
         // handle the submit
         // const selectedSrc = this.editviewForm.src.value;
@@ -107,6 +110,7 @@ export default class EditviewViewController extends mwf.ViewController {
             });
         }
     }
+
 
     // async onresume() {
     //    this.editviewForm.src.value = this.mediaItem.src;
