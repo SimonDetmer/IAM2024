@@ -22,6 +22,19 @@ export default class EditviewViewController extends mwf.ViewController {
         // instantiate the template for the view
         this.viewProxy = this.bindElement("myapp-mediaEditviewTemplate", {item: this.mediaItem}, this.root).viewProxy;
 
+        this.viewProxy.bindAction("deleteItem",(() => {
+            this.mediaItem.delete().then(() => {
+                this.previousView({deletedItem:this.mediaItem}, "itemDeleted");
+            })
+        }));
+
+        if (!this.args?.item) {
+            const deleteElement = this.root.querySelector("#deleteButton")
+            if (deleteElement) {
+                deleteElement.disabled = true
+            }
+        }
+
         // TODO: do databinding, set listeners, initialise the view
         this.editviewForm = this.root.querySelector("main form");
 
